@@ -1,0 +1,7 @@
+langchain
+langchain-classic
+langchain-core
+langchain-groq
+langchain-mcp-adapters
+langgraph
+streamlit
