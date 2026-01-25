@@ -193,6 +193,7 @@ async def main(query: str, mode: Literal['shallow','deep']):
         print('\n')
         print('***'*60)
         
+    return state
         
         
 
