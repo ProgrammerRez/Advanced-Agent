@@ -70,8 +70,25 @@ async def call_search_tools(query: str):
 # NODES
 # =========================
 
+def get_dynamic_model(state: ResearchState):
+    if state.groq_api_key:
+        return ChatGroq(
+            model="llama-3.1-8b-instant",
+            api_key=state.groq_api_key,
+            temperature=0.4,
+            max_tokens=1000,
+            max_retries=3
+        )
+    return model
+
 def plan_node(state: ResearchState) -> ResearchState:
-    plan: ResearchPlan = planner.invoke({
+    m = get_dynamic_model(state)
+    p = (
+        ChatPromptTemplate.from_messages(PLANNING_PROMPT)
+        | m.with_structured_output(ResearchPlan)
+    )
+    
+    plan: ResearchPlan = p.invoke({
         "topic": state.topic,
         "mode": state.mode
     })
@@ -115,6 +132,12 @@ async def validate_node(state: ResearchState) -> ResearchState:
 
 
 async def synthesize_node(state: ResearchState) -> ResearchState:
+    m = get_dynamic_model(state)
+    s = (
+        ChatPromptTemplate.from_messages(SYNTHESIS_PROMPT)
+        | m
+    )
+    
     notes = "\n\n".join(
         f"- {note[:1000]}" for note in state.validated_notes
     )
@@ -123,7 +146,7 @@ async def synthesize_node(state: ResearchState) -> ResearchState:
         f"- {src}" for src in state.validated_sources
     )
 
-    response = await synthesizer.ainvoke({
+    response = await s.ainvoke({
         "topic": state.topic,
         "validated_notes": notes,
         "validated_sources": references

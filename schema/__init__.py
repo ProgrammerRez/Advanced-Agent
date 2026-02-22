@@ -8,6 +8,7 @@ from typing import Literal, List, Optional, Tuple
 class ResearchState(BaseModel):
     topic: str
     mode: Literal["shallow", "deep"]
+    groq_api_key: Optional[str] = None
 
     plan: List[str] = Field(default_factory=list)
     remaining_subtopics: List[str] = Field(default_factory=list)
@@ -41,4 +42,5 @@ class ResearchPlan(BaseModel):
 class APIInput(BaseModel):
     query: str
     mode: Literal['shallow','deep']
+    groq_api_key: Optional[str] = None
     

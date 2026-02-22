@@ -122,7 +122,7 @@ async def event_generator(query: str, mode: str) -> AsyncGenerator[str, None]:
         yield f"data: {json.dumps({'event_type': 'error', 'message': str(e)})}\n\n"
 
 @app.get('/api/research')
-async def stream_research(topic: str, mode: str, api_key: str = Depends(get_api_key)):
+async def stream_research(topic: str, mode: str):
     return StreamingResponse(
         event_generator(topic, mode),
         media_type="text/event-stream",
@@ -135,14 +135,15 @@ async def stream_research(topic: str, mode: str, api_key: str = Depends(get_api_
 
 @app.post('/research_agent')
 @limiter.limit("5/minute")
-async def research(request: Request, state: APIInput, api_key: str = Depends(get_api_key)):
+async def research(request: Request, state: APIInput):
     logger.info(f"Received research request for topic: {state.query}")
     try:
         from schema import ResearchState
         # Initialize state
         initial_state = ResearchState(
             topic=state.query,
-            mode=state.mode
+            mode=state.mode,
+            groq_api_key=state.groq_api_key
         )
         
         # Run the full agentic loop
