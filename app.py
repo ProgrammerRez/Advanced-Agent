@@ -23,12 +23,7 @@ async def health_check():
     return {"status": "healthy", "timestamp": time.time(), "version": "2.0.0"}
 
 @app.post('/research_agent/')
-async def research_agent_endpoint(state: APIInput, api_key: str = Query(None)):    
-    expected_key = os.getenv("RESEARCH_API_KEY")
-    # If a key is set in .env, require it
-    if expected_key and api_key != expected_key:
-        raise HTTPException(status_code=401, detail="Invalid API Key")
-        
+async def research_agent_endpoint(state: APIInput, api_key: str = Query(None)):            
     try:
         events = await main(query=state.query, mode=state.mode)
         return events

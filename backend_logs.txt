@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/mnt/01DC902CBD921320/Side-Projects/Advanced Agent/app.py", line 6, in <module>
-    from search_agent import main
-  File "/mnt/01DC902CBD921320/Side-Projects/Advanced Agent/search_agent.py", line 1, in <module>
-    from tools import search_tavily,search_ddgs, arxiv_search,search_wiki
-  File "/mnt/01DC902CBD921320/Side-Projects/Advanced Agent/tools/__init__.py", line 1, in <module>
-    from langchain_core.tools import tool
-ModuleNotFoundError: No module named 'langchain_core'
