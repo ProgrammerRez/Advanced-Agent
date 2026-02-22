@@ -1,0 +1,52 @@
+# ============================================================
+# netlify.toml — Netlify build & functions configuration
+# ============================================================
+
+# ----------------------------------------------------------
+# Build settings
+# ----------------------------------------------------------
+[build]
+  # No frontend build step needed (static HTML served as-is).
+  # Remove or change 'publish' if you add a frontend build tool.
+  publish = "."
+
+  # Directory where Netlify looks for serverless functions.
+  functions = "netlify/functions"
+
+  # Install Python dependencies before deploying functions.
+  # Netlify picks up requirements.txt automatically for Python runtimes.
+  command = "pip install -r requirements.txt"
+
+# ----------------------------------------------------------
+# Python runtime for functions
+# ----------------------------------------------------------
+[functions]
+  # Use Python 3.11 (matches the Docker image used on Railway).
+  node_bundler = "esbuild"
+
+[functions."api"]
+  # Tell Netlify this is a Python function.
+  runtime = "python3.11"
+
+# ----------------------------------------------------------
+# URL rewrites
+# ----------------------------------------------------------
+# Rewrite  /api/*  →  /.netlify/functions/api
+# so consumers can call  https://<site>.netlify.app/api/...
+# instead of the full internal function path.
+[[redirects]]
+  from   = "/api/*"
+  to     = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Also map the legacy /research_agent endpoint (POST)
+[[redirects]]
+  from   = "/research_agent"
+  to     = "/.netlify/functions/api/research_agent"
+  status = 200
+
+# Health-check short-circuit (optional convenience)
+[[redirects]]
+  from   = "/health"
+  to     = "/.netlify/functions/api/health"
+  status = 200

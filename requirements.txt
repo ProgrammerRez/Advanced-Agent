@@ -17,3 +17,4 @@ aiohttp
 tavily-python
 pydantic
 pydantic-settings
+mangum
