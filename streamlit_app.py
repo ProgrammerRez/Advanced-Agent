@@ -2,21 +2,23 @@ import streamlit as st
 import requests
 import json
 import time
+import os
 from typing import Optional
-from app import app
-import uvicorn as uv
+from dotenv import load_dotenv
 import threading
 import uvicorn
 from app import app
-import os
-from dotenv import load_dotenv
-load_dotenv()
 
 def run_api():
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 api_thread = threading.Thread(target=run_api, daemon=True)
 api_thread.start()
+
+load_dotenv()
+
+# Note: Backend should be started separately via 'python app.py' 
+# to avoid port conflicts during Streamlit reloads.
 
 # Set page config
 st.set_page_config(
@@ -147,7 +149,7 @@ with st.sidebar:
     st.subheader("Backend status")
     
     try:
-        health_res = requests.get("http://127.0.0.1:8000/health", timeout=2)
+        health_res = requests.get("http://0.0.0.0:8000/health", timeout=2)
         if health_res.status_code == 200:
             st.markdown('<div class="status-badge status-online">● Online</div>', unsafe_allow_html=True)
         else:
@@ -216,9 +218,11 @@ if st.session_state.get("messages") and st.session_state.messages[-1]["role"] ==
                 "groq_api_key": groq_api_key if groq_api_key else None
             }
             
-            # API Call
+            # API Call (with trailing slash and query param for key)
+            api_key = os.getenv("RESEARCH_API_KEY", "")
             response = requests.post(
-                "http://127.0.0.1:8000/research_agent",
+                "http://0.0.0.0:8000/research_agent/",
+                params={"api_key": api_key},
                 json=payload,
                 headers={"Content-Type": "application/json"},
                 timeout=120
