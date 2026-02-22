@@ -1,5 +1,5 @@
 from tools import search_tavily,search_ddgs, arxiv_search
-from schema import ResearchState, ResearchPlan
+from schema import ResearchState, ResearchPlan, SynthesisOutput
 from typing import Literal
 from utils import fetch_page
 from langchain_core.prompts import ChatPromptTemplate
@@ -135,7 +135,7 @@ async def synthesize_node(state: ResearchState) -> ResearchState:
     m = get_dynamic_model(state)
     s = (
         ChatPromptTemplate.from_messages(SYNTHESIS_PROMPT)
-        | m
+        | m.with_structured_output(SynthesisOutput)
     )
     
     notes = "\n\n".join(
@@ -153,6 +153,7 @@ async def synthesize_node(state: ResearchState) -> ResearchState:
     })
 
     state.final_report = response.content
+    state.confidence_score = response.confidence_score
     return state
 
 

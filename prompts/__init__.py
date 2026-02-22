@@ -39,6 +39,10 @@ SYNTHESIS_PROMPT = [
             "- Summarize the notes into clear paragraphs.\n"
             "- Keep references at the end.\n"
             "- Output should be a single string suitable for a report."
+            "- If the topic is related to math, include the math formulas and equations."
+            """- Output should be:
+             content: string
+             confidence_score: float"""
         )
     }
 ]

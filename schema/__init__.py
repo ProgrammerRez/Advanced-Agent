@@ -12,6 +12,7 @@ class ResearchState(BaseModel):
 
     plan: List[str] = Field(default_factory=list)
     remaining_subtopics: List[str] = Field(default_factory=list)
+    confidence_score: float = Field(default=0.9)
 
     extracted_notes: List[Tuple[str, str]] = Field(default_factory=list)
     validated_notes: List[str] = Field(default_factory=list)
@@ -32,7 +33,17 @@ class ResearchPlan(BaseModel):
     depth_required: int
     requires_math: bool
     requires_sources: bool
-    
+
+
+
+# =========================
+# Sybthesis Output (Internal Nodes)
+# =========================
+
+class SynthesisOutput(BaseModel):
+    content: str
+    confidence_score: float
+
     
 
 # =========================

@@ -186,7 +186,7 @@ for message in st.session_state.messages:
                     
                 with col2:
                     st.markdown("### Evidence")
-                    score = int((data.get("confidence_score", 0.88)) * 100)
+                    score = int((data.get("confidence_score",0.9)) * 100)
                     st.metric("Inference Certainty", f"{score}%")
                     
                     st.markdown("**Validated Sources**")
