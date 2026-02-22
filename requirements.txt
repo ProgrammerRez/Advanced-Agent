@@ -18,3 +18,4 @@ tavily-python
 pydantic
 pydantic-settings
 mangum
+bs4
