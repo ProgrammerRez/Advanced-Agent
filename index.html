@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Research Validator | Autonomous Intelligence</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter and JetBrains Mono -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        cyan: {
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cyan-glow:focus {
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+            border-color: #22d3ee;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .mode-active {
+            background-color: rgba(6, 182, 212, 0.1);
+            color: #22d3ee;
+            border-color: rgba(6, 182, 212, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-950 text-slate-200 min-h-screen font-sans antialiased selection:bg-cyan-500/30">
+
+    <div class="max-w-5xl mx-auto px-6 py-12 md:py-24">
+        <!-- Header Section -->
+        <header class="mb-16 md:mb-24 text-center">
+            <h1 class="font-mono text-[10px] font-bold text-cyan-500 uppercase tracking-[0.4em] mb-4">Neural Research
+                Engine v2.0</h1>
+            <h2 class="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight">Research Validator</h2>
+        </header>
+
+        <!-- Configuration Panel -->
+        <section class="glass rounded-3xl p-8 md:p-10 mb-16 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-8 opacity-5">
+                <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+                    stroke-linecap="round" stroke-linejoin="round" class="text-cyan-400">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            </div>
+
+            <div class="relative z-10 space-y-8">
+                <!-- Topic Input -->
+                <div>
+                    <label for="topic"
+                        class="block font-mono text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Target
+                        Hypothesis or Research Query</label>
+                    <input type="text" id="topic"
+                        placeholder="e.g., Implications of room-temperature superconductors..."
+                        class="w-full bg-slate-900 border border-slate-800 rounded-2xl px-6 py-4 text-slate-100 placeholder:text-slate-600 outline-none transition-all cyan-glow text-lg">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Mode Selector -->
+                    <div>
+                        <label
+                            class="block font-mono text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Intelligence
+                            Depth</label>
+                        <div class="flex bg-slate-900 p-1.5 rounded-2xl border border-slate-800">
+                            <button id="shallow-mode" onclick="setMode('shallow')"
+                                class="flex-1 py-3 text-xs font-semibold rounded-xl transition-all mode-active">Shallow
+                                Scan</button>
+                            <button id="deep-mode" onclick="setMode('deep')"
+                                class="flex-1 py-3 text-xs font-semibold rounded-xl transition-all text-slate-500 hover:text-slate-300">Deep
+                                Reasoning</button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex items-end">
+                        <button id="submit-btn" onclick="runAnalysis()"
+                            class="w-full h-[58px] bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-2xl transition-all shadow-xl shadow-cyan-500/20 active:scale-[0.98] disabled:opacity-30 disabled:cursor-not-allowed text-sm uppercase tracking-widest">
+                            Deploy Agents
+                        </button>
+                    </div>
+                </div>
+
+                <!-- API Key -->
+                <div class="pt-4 border-t border-slate-800/50">
+                    <label for="api-key"
+                        class="block font-mono text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">Secure
+                        Access Key</label>
+                    <input type="password" id="api-key" placeholder="Enter X-API-Key..."
+                        class="w-full max-w-md bg-slate-900/50 border border-slate-800 rounded-xl px-4 py-2 text-xs text-slate-400 placeholder:text-slate-700 outline-none transition-all cyan-glow">
+                </div>
+            </div>
+        </section>
+
+        <!-- Status & Errors -->
+        <div id="loader" class="hidden flex flex-col items-center justify-center py-20 space-y-8 animate-fade-in">
+            <div class="relative w-16 h-16">
+                <div class="absolute inset-0 border-4 border-cyan-500/10 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-t-cyan-500 rounded-full animate-spin"></div>
+            </div>
+            <div class="text-center">
+                <p class="font-mono text-xs text-cyan-400 animate-pulse tracking-[0.3em] uppercase mb-2">Compiling
+                    Multi-Agent Logic</p>
+                <p class="text-slate-500 text-xs italic">Verifying notes, validating sources, and synthesizing report...
+                </p>
+            </div>
+        </div>
+
+        <div id="error-box"
+            class="hidden p-6 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm mb-16 animate-fade-in flex items-start gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <div class="space-y-1">
+                <p class="font-bold uppercase tracking-wider text-[10px]">Neural Interruption</p>
+                <p id="error-message">Communication with the research core has failed.</p>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="hidden animate-fade-in space-y-20">
+            <!-- Header Result -->
+            <div class="border-b border-slate-800 pb-12">
+                <h3 id="result-topic"
+                    class="text-4xl md:text-6xl font-bold text-white tracking-tight leading-tight max-w-4xl"></h3>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <!-- Metrics & Plan Column -->
+                <div class="lg:col-span-4 space-y-16">
+                    <!-- Confidence Visualization -->
+                    <div class="glass rounded-3xl p-8 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl"></div>
+                        <label
+                            class="block font-mono text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-6">Aggregate
+                            Certainty</label>
+                        <div class="flex items-baseline justify-between mb-4">
+                            <span id="confidence-percentage"
+                                class="text-5xl font-bold text-white tracking-tighter">0%</span>
+                            <span
+                                class="text-[10px] font-mono text-cyan-500 uppercase font-bold tracking-widest">Validated</span>
+                        </div>
+                        <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden border border-slate-800">
+                            <div id="confidence-bar"
+                                class="h-full bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.6)] transition-all duration-[1.5s] ease-out"
+                                style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Research Plan List -->
+                    <div class="space-y-6">
+                        <label
+                            class="block font-mono text-[10px] font-bold text-slate-500 uppercase tracking-widest">Research
+                            Vector Plan</label>
+                        <ul id="plan-list" class="space-y-5">
+                            <!-- Injected structured list -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Report Content Column -->
+                <div class="lg:col-span-8 space-y-20">
+                    <!-- Final Report Core -->
+                    <div class="space-y-8">
+                        <label
+                            class="block font-mono text-[10px] font-bold text-slate-500 uppercase tracking-widest">Agent
+                            Synthesis Report</label>
+                        <div id="report-body"
+                            class="text-slate-300 leading-relaxed text-xl font-light prose prose-invert prose-cyan max-w-none">
+                            <!-- Injected report content -->
+                        </div>
+                    </div>
+
+                    <!-- Sources Management -->
+                    <div class="pt-16 border-t border-slate-900">
+                        <label
+                            class="block font-mono text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-10 text-center md:text-left">Validated
+                            Empirical Sources</label>
+                        <div id="sources-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Injected source links -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vanilla JavaScript Core -->
+    <script>
+        let currentMode = 'shallow';
+        const API_BASE = 'http://127.0.0.1:8000';
+
+        /**
+         * Select research depth mode
+         */
+        function setMode(mode) {
+            currentMode = mode;
+            const shallowBtn = document.getElementById('shallow-mode');
+            const deepBtn = document.getElementById('deep-mode');
+            const activeClass = 'flex-1 py-3 text-xs font-semibold rounded-xl transition-all mode-active';
+            const inactiveClass = 'flex-1 py-3 text-xs font-semibold rounded-xl transition-all text-slate-500 hover:text-slate-300';
+
+            if (mode === 'shallow') {
+                shallowBtn.className = activeClass;
+                deepBtn.className = inactiveClass;
+            } else {
+                deepBtn.className = activeClass;
+                shallowBtn.className = inactiveClass;
+            }
+        }
+
+        /**
+         * Main execution flow
+         */
+        async function runAnalysis() {
+            const topicInput = document.getElementById('topic');
+            const apiKeyInput = document.getElementById('api-key');
+            const submitBtn = document.getElementById('submit-btn');
+            const loader = document.getElementById('loader');
+            const results = document.getElementById('results');
+            const errorBox = document.getElementById('error-box');
+
+            const topic = topicInput.value.trim();
+            const apiKey = apiKeyInput.value.trim();
+
+            if (!topic) {
+                showError("Neural Input Required: Please specify a research topic to proceed.");
+                return;
+            }
+
+            // Lock UI
+            submitBtn.disabled = true;
+            loader.classList.remove('hidden');
+            results.classList.add('hidden');
+            errorBox.classList.add('hidden');
+
+            try {
+                console.log(`[DEBUG] Initializing research request for: "${topic}" in ${currentMode} mode.`);
+
+                const response = await fetch(`${API_BASE}/research_agent`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': apiKey // Auth header for production backend
+                    },
+                    body: JSON.stringify({
+                        query: topic,
+                        mode: currentMode
+                    })
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json().catch(() => ({}));
+                    throw new Error(errData.detail || `Neural Core Exception: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("[DEBUG] Intelligence received:", data);
+
+                renderResults(data);
+
+            } catch (error) {
+                console.error("[CRITICAL] Agent Fault:", error);
+                showError(error.message || "Network Timeout: The research core is currently unreachable. Ensure server is running at http://127.0.0.1:8000.");
+            } finally {
+                submitBtn.disabled = false;
+                loader.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Data rendering and injection
+         */
+        function renderResults(responseData) {
+            // Safety check for the expected JSON structure
+            if (!responseData || !responseData.synthesize) {
+                console.warn("[WARN] Response missing synthesis object. Attempting legacy parsing...");
+                // Fallback if returned as a list of events
+                const synEvent = Array.isArray(responseData) ? responseData.find(e => e.synthesize) : null;
+                if (!synEvent && !responseData.synthesize) {
+                    showError("Schema Incompatibility: The research loop completed, but the synthesis payload was not found.");
+                    return;
+                }
+                responseData = synEvent || responseData;
+            }
+
+            const data = responseData.synthesize;
+
+            // Header
+            document.getElementById('result-topic').textContent = data.topic || "Analysis Result";
+
+            // Structured Plan
+            const planList = document.getElementById('plan-list');
+            planList.innerHTML = '';
+            if (data.plan && Array.isArray(data.plan)) {
+                data.plan.slice(0, 8).forEach((item, idx) => {
+                    const li = document.createElement('li');
+                    li.className = 'flex gap-4 text-sm text-slate-400 group items-start';
+                    li.innerHTML = `
+                        <span class="font-mono text-[10px] text-cyan-500 font-bold border border-cyan-500/20 px-1.5 py-0.5 mt-0.5 rounded transition-all group-hover:bg-cyan-500 group-hover:text-slate-900">${idx + 1}</span>
+                        <span class="group-hover:text-slate-100 transition-colors pt-0.5">${item}</span>
+                    `;
+                    planList.appendChild(li);
+                });
+            }
+
+            // Professional Intelligence Report
+            const reportBody = document.getElementById('report-body');
+            const formattedReport = (data.final_report || "No synthesis available for the provided parameters.")
+                .replace(/\n\n/g, '<div class="h-6"></div>') // Space between paragraphs
+                .split('\n').filter(l => l.trim()).map(line => {
+                    if (line.startsWith('#')) return `<h4 class="text-white font-bold text-2xl mt-8 mb-4">${line.replace(/#/g, '').trim()}</h4>`;
+                    if (line.match(/^\d\./)) return `<p class="mb-4 pl-4 border-l-2 border-slate-800">${line}</p>`;
+                    return `<p class="mb-4">${line}</p>`;
+                }).join('');
+
+            reportBody.innerHTML = formattedReport;
+
+            // Empirical Source Mapping
+            const sourcesList = document.getElementById('sources-list');
+            sourcesList.innerHTML = '';
+            if (data.validated_sources && Array.isArray(data.validated_sources)) {
+                const uniqueSources = [...new Set(data.validated_sources)].slice(0, 10);
+                uniqueSources.forEach(src => {
+                    const a = document.createElement('a');
+                    a.href = src;
+                    a.target = "_blank";
+                    a.className = "flex items-center justify-between p-4 rounded-xl border border-slate-900 bg-slate-900/30 hover:bg-slate-900 hover:border-cyan-500/40 transition-all text-[11px] text-slate-500 hover:text-cyan-400 font-mono group shrink-0";
+                    a.innerHTML = `
+                        <span class="truncate max-w-[80%]">${new URL(src).hostname}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 opacity-30 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    `;
+                    sourcesList.appendChild(a);
+                });
+                if (uniqueSources.length === 0) sourcesList.innerHTML = '<p class="text-slate-700 italic text-xs">No external citations found.</p>';
+            }
+
+            // Certainty Visualization
+            const rawScore = data.confidence_score || data.support_score || 0.85;
+            const percentage = Math.min(Math.max(rawScore * 100, 0), 100).toFixed(0);
+
+            document.getElementById('confidence-percentage').textContent = `${percentage}%`;
+            setTimeout(() => {
+                document.getElementById('confidence-bar').style.width = `${percentage}%`;
+            }, 100);
+
+            // Display Transition
+            results.classList.remove('hidden');
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        /**
+         * Error notification
+         */
+        function showError(msg) {
+            const errorBox = document.getElementById('error-box');
+            const errorMsg = document.getElementById('error-message');
+            errorMsg.textContent = msg;
+            errorBox.classList.remove('hidden');
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+
+</html>

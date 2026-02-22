@@ -23,7 +23,7 @@ class ResearchState(BaseModel):
 
 
 # =========================
-# STRUCTURED OUTPUT
+# STRUCTURED OUTPUT (Ineternal Nodes)
 # =========================
 
 class ResearchPlan(BaseModel):
@@ -31,3 +31,14 @@ class ResearchPlan(BaseModel):
     depth_required: int
     requires_math: bool
     requires_sources: bool
+    
+    
+
+# =========================
+# API INPUT
+# =========================
+
+class APIInput(BaseModel):
+    query: str
+    mode: Literal['shallow','deep']
+    

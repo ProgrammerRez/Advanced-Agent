@@ -186,14 +186,16 @@ async def main(query: str, mode: Literal['shallow','deep']):
         topic=query,
         mode=mode
     )
+    events = []
     async for event in research_agent.astream(state):
+        events.append(event)
         print('***'*60)
         print('\n')
         print(event)
         print('\n')
         print('***'*60)
         
-    return state
+    return events
         
         
 
