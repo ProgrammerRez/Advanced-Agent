@@ -6,46 +6,41 @@
 # Build settings
 # ----------------------------------------------------------
 [build]
-  # No frontend build step needed (static HTML served as-is).
-  # Remove or change 'publish' if you add a frontend build tool.
+  # Static HTML served as-is (no frontend build step).
   publish = "."
 
-  # Directory where Netlify looks for serverless functions.
-  functions = "netlify/functions"
-
-  # Install Python dependencies before deploying functions.
-  # Netlify picks up requirements.txt automatically for Python runtimes.
+  # Install Python runtime dependencies during build.
   command = "pip install -r requirements.txt"
 
 # ----------------------------------------------------------
-# Python runtime for functions
+# Functions directory (modern key — takes priority over
+# the legacy [build] functions key)
 # ----------------------------------------------------------
 [functions]
-  # Use Python 3.11 (matches the Docker image used on Railway).
-  node_bundler = "esbuild"
+  directory = "netlify/functions"
 
+# Python 3.11 runtime for the `api` function.
+# NOTE: Do NOT set node_bundler here — that forces JS bundling
+# and causes Netlify to skip .py files entirely.
 [functions."api"]
-  # Tell Netlify this is a Python function.
   runtime = "python3.11"
 
 # ----------------------------------------------------------
-# URL rewrites
+# URL rewrites — clean public-facing paths
 # ----------------------------------------------------------
-# Rewrite  /api/*  →  /.netlify/functions/api
-# so consumers can call  https://<site>.netlify.app/api/...
-# instead of the full internal function path.
+# All /api/* traffic → the serverless function
 [[redirects]]
   from   = "/api/*"
   to     = "/.netlify/functions/api/:splat"
   status = 200
 
-# Also map the legacy /research_agent endpoint (POST)
+# Legacy POST endpoint used by the frontend
 [[redirects]]
   from   = "/research_agent"
   to     = "/.netlify/functions/api/research_agent"
   status = 200
 
-# Health-check short-circuit (optional convenience)
+# Convenience health-check shortcut
 [[redirects]]
   from   = "/health"
   to     = "/.netlify/functions/api/health"

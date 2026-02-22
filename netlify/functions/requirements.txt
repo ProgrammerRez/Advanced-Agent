@@ -1,0 +1,19 @@
+# netlify/functions/requirements.txt
+# Dependencies bundled with the `api` Python serverless function.
+# Keep in sync with the root requirements.txt.
+fastapi
+mangum
+langchain
+langchain-core
+langchain-groq
+langchain-mcp-adapters
+langgraph
+wikipedia
+ddgs
+arxiv
+slowapi
+python-dotenv
+aiohttp
+tavily-python
+pydantic
+pydantic-settings
