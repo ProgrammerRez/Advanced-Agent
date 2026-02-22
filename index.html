@@ -77,13 +77,13 @@
             border-radius: 10px;
         }
 
+        /* ── Dot-flashing loader ───────────────────────────────────── */
         .dot-flashing {
             position: relative;
             width: 6px;
             height: 6px;
             border-radius: 5px;
             background-color: #06b6d4;
-            color: #06b6d4;
             animation: dot-flashing 1s infinite linear alternate;
             animation-delay: 0.5s;
         }
@@ -102,7 +102,6 @@
             height: 6px;
             border-radius: 5px;
             background-color: #06b6d4;
-            color: #06b6d4;
             animation: dot-flashing 1s infinite alternate;
             animation-delay: 0s;
         }
@@ -113,7 +112,6 @@
             height: 6px;
             border-radius: 5px;
             background-color: #06b6d4;
-            color: #06b6d4;
             animation: dot-flashing 1s infinite alternate;
             animation-delay: 1s;
         }
@@ -127,6 +125,159 @@
             100% {
                 background-color: rgba(6, 182, 212, 0.2);
             }
+        }
+
+        /* ── API Status Badge ─────────────────────────────────────── */
+        #api-status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 5px 10px;
+            border-radius: 8px;
+            border: 1px solid;
+            transition: all 0.35s ease;
+            cursor: default;
+            user-select: none;
+        }
+
+        #api-status-badge.status-unknown {
+            color: #64748b;
+            border-color: rgba(100, 116, 139, 0.25);
+            background: rgba(100, 116, 139, 0.06);
+        }
+
+        #api-status-badge.status-checking {
+            color: #f59e0b;
+            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.06);
+        }
+
+        #api-status-badge.status-online {
+            color: #34d399;
+            border-color: rgba(52, 211, 153, 0.3);
+            background: rgba(52, 211, 153, 0.06);
+        }
+
+        #api-status-badge.status-offline {
+            color: #f87171;
+            border-color: rgba(248, 113, 113, 0.3);
+            background: rgba(248, 113, 113, 0.06);
+        }
+
+        #api-status-badge .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            transition: background 0.35s;
+        }
+
+        #api-status-badge.status-unknown .status-dot {
+            background: #64748b;
+        }
+
+        #api-status-badge.status-checking .status-dot {
+            background: #f59e0b;
+            animation: dot-flashing 0.8s infinite linear alternate;
+        }
+
+        #api-status-badge.status-online .status-dot {
+            background: #34d399;
+            animation: pulse-green 1.8s infinite;
+        }
+
+        #api-status-badge.status-offline .status-dot {
+            background: #f87171;
+        }
+
+        @keyframes pulse-green {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+            }
+
+            50% {
+                box-shadow: 0 0 0 4px rgba(52, 211, 153, 0);
+            }
+        }
+
+        /* ── Test API Button ─────────────────────────────────────── */
+        #test-api-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            background: rgba(34, 211, 238, 0.06);
+            color: #22d3ee;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        #test-api-btn:hover {
+            background: rgba(34, 211, 238, 0.12);
+            border-color: rgba(34, 211, 238, 0.5);
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.15);
+        }
+
+        #test-api-btn:active {
+            transform: scale(0.96);
+        }
+
+        #test-api-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ── Error card in chat ──────────────────────────────────── */
+        .error-card {
+            background: rgba(248, 113, 113, 0.05);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            border-radius: 16px;
+            padding: 20px 24px;
+        }
+
+        .error-card .err-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: #f87171;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .error-card .err-msg {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fca5a5;
+            margin-bottom: 8px;
+        }
+
+        .error-card .err-hint {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .error-card .err-detail {
+            margin-top: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: #475569;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            word-break: break-all;
         }
     </style>
 </head>
@@ -186,6 +337,19 @@
                     <p class="text-[10px] text-cyan-500/50 font-mono">READY // OMNI_SEARCH_ACTIVE</p>
                 </div>
             </div>
+
+            <!-- API Health Controls -->
+            <div class="flex items-center gap-3">
+                <!-- Live status badge -->
+                <div id="api-status-badge" class="status-unknown">
+                    <span class="status-dot"></span>
+                    <span id="api-status-label">UNKNOWN</span>
+                </div>
+                <!-- Test button -->
+                <button id="test-api-btn" onclick="testAPIHealth()" title="Ping the backend /health endpoint">
+                    ⚡ Test API
+                </button>
+            </div>
         </header>
 
         <!-- Messages Flow -->
@@ -227,27 +391,97 @@
 
     <script>
         let currentMode = 'shallow';
-        const API_BASE = 'https://advanced-agent-production.up.railway.app'; // Production backend
+        const API_BASE = 'https://advanced-agent-production.up.railway.app';
 
+        // ── Mode Toggle ────────────────────────────────────────────────────
         function setMode(mode) {
             currentMode = mode;
-            document.getElementById('btn-shallow').className = mode === 'shallow' ? 'px-3 py-1 text-[10px] font-bold rounded-md transition-all bg-slate-800 text-cyan-400' : 'px-3 py-1 text-[10px] font-bold rounded-md transition-all text-slate-500 hover:text-slate-300';
-            document.getElementById('btn-deep').className = mode === 'deep' ? 'px-3 py-1 text-[10px] font-bold rounded-md transition-all bg-slate-800 text-cyan-400' : 'px-3 py-1 text-[10px] font-bold rounded-md transition-all text-slate-500 hover:text-slate-300';
+            const activeClass = 'px-3 py-1 text-[10px] font-bold rounded-md transition-all bg-slate-800 text-cyan-400';
+            const inactiveClass = 'px-3 py-1 text-[10px] font-bold rounded-md transition-all text-slate-500 hover:text-slate-300';
+            document.getElementById('btn-shallow').className = mode === 'shallow' ? activeClass : inactiveClass;
+            document.getElementById('btn-deep').className = mode === 'deep' ? activeClass : inactiveClass;
         }
 
         function handleKeyPress(e) { if (e.key === 'Enter') runResearch(); }
 
+        // ── API Health Check ───────────────────────────────────────────────
+        async function testAPIHealth() {
+            const badge = document.getElementById('api-status-badge');
+            const label = document.getElementById('api-status-label');
+            const btn = document.getElementById('test-api-btn');
+
+            // Set checking state
+            badge.className = 'status-checking';
+            label.textContent = 'CHECKING…';
+            btn.disabled = true;
+            btn.textContent = '⏳ Pinging…';
+
+            try {
+                const start = Date.now();
+                const res = await fetch(`${API_BASE}/health`, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(8000)   // 8-second hard cap
+                });
+                const ms = Date.now() - start;
+
+                if (res.ok) {
+                    const data = await res.json();
+                    badge.className = 'status-online';
+                    label.textContent = `ONLINE · ${ms}ms`;
+                    btn.textContent = '⚡ Test API';
+                    appendHealthResult(true, ms, data);
+                } else {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+            } catch (err) {
+                badge.className = 'status-offline';
+                label.textContent = 'OFFLINE';
+                btn.textContent = '⚡ Test API';
+                appendHealthResult(false, null, null, err.message);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function appendHealthResult(online, ms, data, errMsg) {
+            const flow = document.getElementById('chat-flow');
+            const div = document.createElement('div');
+            div.className = 'msg-appear max-w-xl';
+
+            if (online) {
+                div.innerHTML = `
+                    <div class="bot-msg glass rounded-2xl px-6 py-4 flex items-center gap-4">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center flex-shrink-0">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-emerald-400 font-mono uppercase tracking-widest">Backend Online</p>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Responded in <span class="text-white font-semibold">${ms}ms</span> · Agent: <span class="text-white font-semibold">${data?.agent ?? 'online'}</span> · v${data?.version ?? '?'}</p>
+                        </div>
+                    </div>`;
+            } else {
+                div.innerHTML = `
+                    <div class="error-card">
+                        <div class="err-code">ERR_HEALTH_FAIL</div>
+                        <div class="err-msg">Backend Unreachable</div>
+                        <div class="err-hint">Could not contact <code>${API_BASE}/health</code>. The server may be down, sleeping (cold-start), or there is a network issue.</div>
+                        <div class="err-detail">${errMsg}</div>
+                    </div>`;
+            }
+            flow.appendChild(div);
+            scrollToBottom();
+        }
+
+        // ── main chat ─────────────────────────────────────────────────────
         async function runResearch() {
             const input = document.getElementById('query-input');
             const groqKey = document.getElementById('groq-key').value.trim();
             const query = input.value.trim();
             if (!query) return;
 
-            // 1. Add User Message
             appendMessage('user', query);
             input.value = '';
 
-            // 2. Add Loading Indicator
             const loadingId = appendLoading();
             scrollToBottom();
 
@@ -255,27 +489,65 @@
                 const response = await fetch(`${API_BASE}/research_agent/`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        query,
-                        mode: currentMode,
-                        groq_api_key: groqKey
-                    })
+                    body: JSON.stringify({ query, mode: currentMode, groq_api_key: groqKey })
                 });
 
-                if (!response.ok) throw new Error("Agent fault: " + response.status);
-
-                const data = await response.json();
+                const payload = await response.json().catch(() => null);
                 removeLoading(loadingId);
-                appendResearchResult(data.synthesize || data);
+
+                if (!response.ok) {
+                    // Structured error from our custom error registry
+                    appendErrorCard(response.status, payload);
+                } else {
+                    appendResearchResult(payload?.synthesize || payload);
+                }
 
             } catch (err) {
                 removeLoading(loadingId);
-                appendMessage('bot', `<span class="text-red-400 font-bold">CRITICAL_FAULT:</span> ${err.message}. Please verify core connectivity and API key.`, true);
+                // Network-level failure (server completely unreachable)
+                appendErrorCard(0, null, err.message);
             }
             scrollToBottom();
         }
 
-        function appendMessage(type, content, isError = false) {
+        // ── Error display ──────────────────────────────────────────────────
+        // Maps HTTP status codes to diagnostics when the server can't send structured JSON
+        const HTTP_ERROR_MAP = {
+            0: { code: 'ERR_NETWORK', message: 'Cannot reach the server.', hint: 'Check your internet connection, or the backend may be offline.' },
+            400: { code: 'ERR_400', message: 'Malformed request.', hint: 'Ensure the query is non-empty. If this persists, report a bug.' },
+            401: { code: 'ERR_401', message: 'Authentication failed.', hint: 'Supply a valid X-API-Key or check the API key field.' },
+            429: { code: 'ERR_429', message: 'Rate limit exceeded.', hint: 'You can send at most 5 requests per minute. Wait and retry.' },
+            500: { code: 'ERR_500', message: 'Internal server error.', hint: 'The backend encountered an unexpected fault. Try again later.' },
+            502: { code: 'ERR_502', message: 'LLM provider error.', hint: 'Verify your Groq API key is valid and the service is reachable.' },
+            503: { code: 'ERR_503', message: 'Research agent unavailable.', hint: 'The agent failed to initialise. Retry in a moment.' },
+            504: { code: 'ERR_504', message: 'Search tools timed out.', hint: 'Check internet access and TAVILY_API_KEY on the server.' },
+        };
+
+        function appendErrorCard(httpStatus, payload, networkErrMsg) {
+            // Try to use structured error from backend first
+            const structured = payload?.error;
+            const fallback = HTTP_ERROR_MAP[httpStatus] || HTTP_ERROR_MAP[500];
+
+            const code = structured?.code || fallback.code;
+            const message = structured?.message || fallback.message;
+            const hint = structured?.hint || fallback.hint;
+            const detail = structured?.detail || networkErrMsg || `HTTP ${httpStatus}`;
+
+            const flow = document.getElementById('chat-flow');
+            const div = document.createElement('div');
+            div.className = 'msg-appear max-w-2xl';
+            div.innerHTML = `
+                <div class="error-card">
+                    <div class="err-code">${code}</div>
+                    <div class="err-msg">${message}</div>
+                    <div class="err-hint">${hint}</div>
+                    <div class="err-detail">${detail}</div>
+                </div>`;
+            flow.appendChild(div);
+        }
+
+        // ── Generic message bubble ─────────────────────────────────────────
+        function appendMessage(type, content) {
             const flow = document.getElementById('chat-flow');
             const div = document.createElement('div');
             div.className = `max-w-2xl p-6 rounded-2xl msg-appear ${type === 'user' ? 'user-msg ml-auto' : 'bot-msg glass'}`;
