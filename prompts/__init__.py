@@ -37,6 +37,7 @@ SYNTHESIS_PROMPT = [
             "Sources:\n{validated_sources}\n\n"
             "Instructions:\n"
             "- Summarize the notes into clear paragraphs.\n"
+            "- Keep a good amount of content based on the notes and references and try to add as much as possible.\n"
             "- Keep references at the end.\n"
             "- Output should be a single string suitable for a report."
             "- If the topic is related to math, include the math formulas and equations."

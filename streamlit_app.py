@@ -214,15 +214,12 @@ if st.session_state.get("messages") and st.session_state.messages[-1]["role"] ==
             # Prepare payload
             payload = {
                 "query": user_query,
-                "mode": mode,
-                "groq_api_key": groq_api_key if groq_api_key else None
+                "mode": mode
             }
             
             # API Call (with trailing slash and query param for key)
-            api_key = os.getenv("RESEARCH_API_KEY", "")
             response = requests.post(
                 "http://0.0.0.0:8000/research_agent/",
-                params={"api_key": api_key},
                 json=payload,
                 headers={"Content-Type": "application/json"},
                 timeout=120

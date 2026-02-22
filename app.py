@@ -1,6 +1,6 @@
 import os
 import time
-from fastapi import FastAPI, Query, HTTPException, Depends
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from schema import APIInput
 from search_agent import main
@@ -23,7 +23,7 @@ async def health_check():
     return {"status": "healthy", "timestamp": time.time(), "version": "2.0.0"}
 
 @app.post('/research_agent/')
-async def research_agent_endpoint(state: APIInput, api_key: str = Query(None)):            
+async def research_agent_endpoint(state: APIInput):            
     try:
         events = await main(query=state.query, mode=state.mode)
         return events

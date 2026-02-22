@@ -8,29 +8,13 @@ from langgraph.graph import StateGraph, END
 from langchain_groq import ChatGroq
 import asyncio
 import aiohttp
+import os
 
 
 
 # =========================
 # MODELS
 # =========================
-
-model = ChatGroq(
-    model="llama-3.1-8b-instant",
-    temperature=0.4,
-    max_tokens=1000,
-    max_retries=3
-)
-
-planner = (
-    ChatPromptTemplate.from_messages(PLANNING_PROMPT)
-    | model.with_structured_output(ResearchPlan)
-)
-
-synthesizer = (
-    ChatPromptTemplate.from_messages(SYNTHESIS_PROMPT)
-    | model
-)
 
 search_tools = [
     search_tavily,
@@ -71,15 +55,13 @@ async def call_search_tools(query: str):
 # =========================
 
 def get_dynamic_model(state: ResearchState):
-    if state.groq_api_key:
+    if os.getenv('GROQ_API_KEY'):
         return ChatGroq(
-            model="llama-3.1-8b-instant",
-            api_key=state.groq_api_key,
+            model="llama-3.3-70b-versatile",
             temperature=0.4,
             max_tokens=1000,
             max_retries=3
         )
-    return model
 
 def plan_node(state: ResearchState) -> ResearchState:
     m = get_dynamic_model(state)
@@ -132,10 +114,10 @@ async def validate_node(state: ResearchState) -> ResearchState:
 
 
 async def synthesize_node(state: ResearchState) -> ResearchState:
-    m = get_dynamic_model(state)
+    m = get_dynamic_model(state).with_structured_output(SynthesisOutput)
     s = (
         ChatPromptTemplate.from_messages(SYNTHESIS_PROMPT)
-        | m.with_structured_output(SynthesisOutput)
+        | m
     )
     
     notes = "\n\n".join(
@@ -225,4 +207,4 @@ async def main(query: str, mode: Literal['shallow','deep']):
 
 
 if __name__ == "__main__":
-    asyncio.run(main(query = 'Neural Networks', mode='shallow'))
+    asyncio.run(main(query = 'String Theory in Depth', mode='deep'))
