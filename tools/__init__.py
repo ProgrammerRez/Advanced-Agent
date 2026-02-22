@@ -7,22 +7,22 @@ import re
 load_dotenv()
 
 # 1. Tool Definitions with optimized docstrings for 2026 LLMs
-wiki = WikipediaRetriever(top_k_results=2)
+# wiki = WikipediaRetriever(top_k_results=2)
 arxiv = ArxivRetriever(top_k_results=2)
 ddgs = DuckDuckGoSearchResults()
 tav = TavilySearchResults(max_results=3)
 
 pattern = r"snippet: (.*?), title: (.*?), link: (.*?)(?=, snippet: |$)"
 
-@tool
-def search_wiki(query: str):
-    """Useful for general knowledge and history. Input: a search string."""
-    result = wiki.invoke(input=query)
+# @tool
+# def search_wiki(query: str):
+#     """Useful for general knowledge and history. Input: a search string."""
+#     result = wiki.invoke(input=query)
 
-    content = [str(res.metadata.get('summary'))[:1000] for res in result]
-    url = [res.metadata.get('source') for res in result]
+#     content = [str(res.metadata.get('summary'))[:1000] for res in result]
+#     url = [res.metadata.get('source') for res in result]
     
-    return content, url
+#     return content, url
     
 
 @tool
