@@ -12,7 +12,7 @@ class ResearchState(BaseModel):
 
     plan: List[str] = Field(default_factory=list)
     remaining_subtopics: List[str] = Field(default_factory=list)
-    confidence_score: float = Field(default=0.9)
+    confidence_score: float = Field(default=0.0)
 
     extracted_notes: List[Tuple[str, str]] = Field(default_factory=list)
     validated_notes: List[str] = Field(default_factory=list)

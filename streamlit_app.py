@@ -186,7 +186,7 @@ for message in st.session_state.messages:
                     
                 with col2:
                     st.markdown("### Evidence")
-                    score = int((data.get("confidence_score",0.9)) * 100)
+                    score = int(data.get("confidence_score", 0) * 100)
                     st.metric("Inference Certainty", f"{score}%")
                     
                     st.markdown("**Validated Sources**")
@@ -226,7 +226,16 @@ if st.session_state.get("messages") and st.session_state.messages[-1]["role"] ==
             
             if response.status_code == 200:
                 full_data = response.json()
-                research_data = full_data.get("synthesize", {})
+                
+                # Extract the synthesize data from the list of events
+                research_data = {}
+                if isinstance(full_data, list):
+                    for event in reversed(full_data):
+                        if "synthesize" in event:
+                            research_data = event["synthesize"]
+                            break
+                elif isinstance(full_data, dict):
+                    research_data = full_data.get("synthesize", {})
                 
                 # Store result
                 st.session_state.messages.append({

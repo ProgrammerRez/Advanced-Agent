@@ -1,4 +1,4 @@
-from tools import search_tavily,search_ddgs, arxiv_search
+from tools import search_tavily,search_ddgs, arxiv_search,search_wiki
 from schema import ResearchState, ResearchPlan, SynthesisOutput
 from typing import Literal
 from utils import fetch_page
@@ -35,7 +35,7 @@ synthesizer = (
 search_tools = [
     search_tavily,
     search_ddgs,
-    # search_wiki,
+    search_wiki,
     arxiv_search
 ]
 
