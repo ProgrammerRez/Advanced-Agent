@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-url = 'https://advanced-agent-production.up.railway.app/research_agent/'
+url = 'http://0.0.0.0:8000/research_agent/'
 topic = 'String Theory'
 mode = 'shallow'
 
